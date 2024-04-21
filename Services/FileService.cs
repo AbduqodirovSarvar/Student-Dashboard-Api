@@ -10,7 +10,7 @@ namespace Student_Dashboard_Api.Services
         {
             _filesDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                                                 ? Path.Combine(Directory.GetCurrentDirectory(), "Data", "Files")
-                                                : Path.Combine("/app/Files");
+                                                : Path.Combine("/app");
 
             Directory.CreateDirectory(_filesDirectory);
         }

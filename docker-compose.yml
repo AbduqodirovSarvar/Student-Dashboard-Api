@@ -8,8 +8,8 @@ services:
     container_name: student-dashboard-web-api
     restart: always
     volumes:
-      - /root/Sarvar/DB:/app/DB
-      - /root/Sarvar/Files:/app/Files
+      - /root/DB:/app/DB
+      - /root/Files:/app/Files
     ports:
       - "8080:8080"
     networks:

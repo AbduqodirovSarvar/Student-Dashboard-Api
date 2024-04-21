@@ -21,7 +21,7 @@ RUN dotnet publish "./Student-Dashboard-Api.csproj" -c $BUILD_CONFIGURATION -o /
 
 # Add environment variables
 ENV ENVIRONMENT=production
-ENV CONNECTION_STRING="Data Source=/app/DB/Student.db"
+ENV CONNECTION_STRING="Data Source=/app/Student.db"
 
 FROM base AS final
 WORKDIR /app
