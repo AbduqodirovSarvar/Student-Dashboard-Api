@@ -68,7 +68,7 @@ namespace Student_Dashboard_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm] StudentCreateDto studentCreateDto)
+        public async Task<IActionResult> Add([FromBody] StudentCreateDto studentCreateDto)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Student_Dashboard_Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] StudentUpdateDto studentUpdateDto)
+        public async Task<IActionResult> Update([FromBody] StudentUpdateDto studentUpdateDto)
         {
             try
             {
