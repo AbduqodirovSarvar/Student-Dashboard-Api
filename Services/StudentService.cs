@@ -2,6 +2,7 @@
 using Student_Dashboard_Api.Data;
 using Student_Dashboard_Api.Data.Entities;
 using Student_Dashboard_Api.Models;
+using System.Linq.Expressions;
 
 namespace Student_Dashboard_Api.Services
 {
@@ -64,12 +65,25 @@ namespace Student_Dashboard_Api.Services
 
         public async Task<ICollection<Student>> GetAll()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students.OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<Student?> Get(int Id)
         {
             return await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public async Task<ICollection<Student>> GetByFilter(GetFilterModel filterModel)
+        {
+            if(filterModel.SearchText == null || filterModel.SearchText.Length < 1)
+            {
+                return Pagination(await _context.Students.ToListAsync(), filterModel.PageIndex, filterModel.PageSize);
+            }
+            var filteredData = await _context.Students.Where(x => x.FullName.ToLower().Contains(filterModel.SearchText.ToLower())
+                                                    | x.Gender.ToLower().Contains(filterModel.SearchText.ToLower())
+                                                    | x.PhoneNumber.Contains(filterModel.SearchText))
+                                                    .ToListAsync();
+            return Pagination(filteredData, filterModel.PageIndex, filterModel.PageSize);
         }
 
         public async Task<bool> Remove(int Id)
@@ -82,6 +96,16 @@ namespace Student_Dashboard_Api.Services
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+
+        private static List<Student> Pagination(List<Student> students, int pageIndex, int pageSize)
+        {
+            return students
+                    .OrderByDescending(x => x.CreatedAt)
+                    .Skip((pageIndex - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
         }
     }
 }

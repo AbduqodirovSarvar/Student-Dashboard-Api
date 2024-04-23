@@ -26,6 +26,19 @@ namespace Student_Dashboard_Api.Controllers
             }
         }
 
+        [HttpGet("ByFilter")]
+        public async Task<IActionResult> GetByFilter([FromQuery] GetFilterModel getFilterModel)
+        {
+            try
+            {
+                return Ok(await _studentService.GetByFilter(getFilterModel));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("photo/{photoName}")]
         public IActionResult GetPhoto([FromRoute] string photoName)
         {
