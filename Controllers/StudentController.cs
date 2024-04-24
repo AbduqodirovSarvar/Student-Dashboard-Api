@@ -27,7 +27,7 @@ namespace Student_Dashboard_Api.Controllers
         }
 
         [HttpGet("ByFilter")]
-        public async Task<IActionResult> GetByFilter([FromQuery] GetFilterModel getFilterModel)
+        public async Task<IActionResult> GetByFilter([FromQuery] FilterModel getFilterModel)
         {
             try
             {

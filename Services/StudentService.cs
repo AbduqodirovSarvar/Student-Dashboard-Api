@@ -73,17 +73,20 @@ namespace Student_Dashboard_Api.Services
             return await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<ICollection<Student>> GetByFilter(GetFilterModel filterModel)
+        public async Task<FilteredStudentResponse> GetByFilter(FilterModel filterModel)
         {
+            ICollection<Student> students;
             if(filterModel.SearchText == null || filterModel.SearchText.Length < 1)
             {
-                return Pagination(await _context.Students.ToListAsync(), filterModel.PageIndex, filterModel.PageSize);
+                students = Pagination(await _context.Students.ToListAsync(), filterModel.PageIndex, filterModel.PageSize);
+                return new FilteredStudentResponse(students.Count, students);
             }
             var filteredData = await _context.Students.Where(x => x.FullName.ToLower().Contains(filterModel.SearchText.ToLower())
                                                     | x.Gender.ToLower().Contains(filterModel.SearchText.ToLower())
                                                     | x.PhoneNumber.Contains(filterModel.SearchText))
                                                     .ToListAsync();
-            return Pagination(filteredData, filterModel.PageIndex, filterModel.PageSize);
+            students = Pagination(filteredData, filterModel.PageIndex, filterModel.PageSize);
+            return new FilteredStudentResponse(filteredData.Count, students);
         }
 
         public async Task<bool> Remove(int Id)
