@@ -79,7 +79,7 @@ namespace Student_Dashboard_Api.Services
             if(filterModel.SearchText == null || filterModel.SearchText.Length < 1)
             {
                 students = Pagination(await _context.Students.ToListAsync(), filterModel.PageIndex, filterModel.PageSize);
-                return new FilteredStudentResponse(students.Count, students);
+                return new FilteredStudentResponse(_context.Students.Count(), students);
             }
             var filteredData = await _context.Students.Where(x => x.FullName.ToLower().Contains(filterModel.SearchText.ToLower())
                                                     | x.Gender.ToLower().Contains(filterModel.SearchText.ToLower())
